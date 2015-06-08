@@ -38,6 +38,10 @@ namespace PrismDemo.ViewModels
             parameters.Add("message", "Message from MainPage");
 
             _navigationService.Navigate("ViewA", parameters);
+
+            //other ways of navigating depending on how you registered your views for navigation
+            //_navigationService.Navigate("A", parameters);
+            //_navigationService.Navigate<ViewAViewModel>(parameters);
         }        
     }
 }
