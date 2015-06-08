@@ -2,17 +2,12 @@
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PrismDemo.ViewModels
 {
-    public class MainPageViewModel : BindableBase, INavigationServiceAware
+    public class MainPageViewModel : BindableBase
     {
-        public INavigationService NavigationService { get; set; }
+        private readonly INavigationService _navigationService;
 
         string _title = "Main Page";
         public string Title
@@ -23,11 +18,13 @@ namespace PrismDemo.ViewModels
 
         public DelegateCommand NavigateCommand { get; set; }
 
-        public MainPageViewModel(IEventAggregator eventAggregator)
+        public MainPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
-            eventAggregator.GetEvent<GoBackEvent>().Subscribe(HandleEvent);
+            _navigationService = navigationService;
 
             NavigateCommand = new DelegateCommand(Navigate);
+
+            eventAggregator.GetEvent<GoBackEvent>().Subscribe(HandleEvent);
         }
 
         void HandleEvent(string payload)
@@ -40,7 +37,7 @@ namespace PrismDemo.ViewModels
             NavigationParameters parameters = new NavigationParameters();
             parameters.Add("message", "Message from MainPage");
 
-            NavigationService.Navigate("ViewA", parameters);
+            _navigationService.Navigate("ViewA", parameters);
         }        
     }
 }

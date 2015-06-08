@@ -2,17 +2,13 @@
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PrismDemo.ViewModels
 {
     public class ViewAViewModel : BindableBase, INavigationAware
     {
-        public INavigationService NavigationService { get; set; }
+        private readonly INavigationService _navigationService;
+        readonly IEventAggregator _eventAggregator;
 
         string _title = "View A";
         public string Title
@@ -23,17 +19,18 @@ namespace PrismDemo.ViewModels
 
         public DelegateCommand NavigateCommand { get; set; }
 
-        IEventAggregator _eventAggregator;
-        public ViewAViewModel(IEventAggregator eventAggregator)
+        public ViewAViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
+            _navigationService = navigationService;
             _eventAggregator = eventAggregator;
+            
             NavigateCommand = new DelegateCommand(GoBack);
         }
 
         void GoBack()
         {
             _eventAggregator.GetEvent<GoBackEvent>().Publish("ViewA Message");
-            NavigationService.GoBack();
+            _navigationService.GoBack();
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PrismDemo
 {
-    public class GoBackEvent : PrismEvent<string>
+    public class GoBackEvent : PubSubEvent<string>
     {
     }
 }
